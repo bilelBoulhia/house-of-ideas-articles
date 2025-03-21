@@ -1,38 +1,15 @@
 "use client"
-
-import { motion } from "motion/react"
 import { Mail, Phone, MapPin } from "lucide-react"
 import Link from "next/link"
-import DescriptionFliper from "@/components/ui/Description-Fliper"
 import { FacebookIcon, Instagram, LinkedInIcon, Tiktok } from "@/components/ui/Icons"
 import InstagramProfile from "@/components/ui/instagram-profile"
 
 const paragraph = "Follow our community to improve your skills, ideas, business, and creative thinking."
 
 export default function Footer() {
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1,
-                delayChildren: 0.3,
-            },
-        },
-    }
 
-    const itemVariants = {
-        hidden: { y: 20, opacity: 0 },
-        visible: {
-            y: 0,
-            opacity: 1,
-            transition: {
-                type: "spring",
-                stiffness: 100,
-                damping: 10,
-            },
-        },
-    }
+
+
 
     return (
         <div className="relative min-h-screen w-full flex flex-col lg:flex-row p-4 md:p-6 items-center justify-center overflow-hidden">

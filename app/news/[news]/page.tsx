@@ -43,9 +43,7 @@ export default function NewsPage({ params: paramsPromise }: { params: Promise<{ 
     const { data:featuredNews  } = useSWR<Tables<"news">>(`/news/${params.news}`, () => fetchArticleById(params.news));
     const router = useRouter();
     const handleRouterClick = (news:number) => {
-
         router.push(`/news/${news}`);
-
     };
     if (!featuredNews) {
         return (
