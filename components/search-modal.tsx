@@ -4,7 +4,7 @@ import React, { useState } from "react"
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons"
 import { Button } from "@/components/ui/button"
 import {Dialog, DialogContent, DialogTitle, DialogTrigger} from "@/components/ui/dialog"
-
+import { useRouter } from "next/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import {motion} from "motion/react";
@@ -12,10 +12,19 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/Tabs";
 import {fetch} from "@/utils/supabase/client-api";
 import {Tables} from "@/utils/types";
 import useSWR from "swr";
-import {Clock1Icon, ClockAlert} from "lucide-react";
+import { ClockAlert} from "lucide-react";
 
 
+async function fetchCategoryById(Id: number): Promise<any> {
+    const result = await fetch<Tables<"categories">[]>(
+        "categories",
+        ["*"],
+        (q) => q.eq("category_id", Id)
+    );
+    console.log(result);
 
+    return Array.isArray(result) && result.length > 0 ? result[0] : {};
+}
 
 const Newsfetcher = async (news_title:string) => {
 
@@ -30,15 +39,11 @@ const Newsfetcher = async (news_title:string) => {
 }
 
 const articlefetcher = async (article_name:string) => {
-
     return await fetch<Tables<'articles'>>(
         "articles",
         ["*"],
         (q) => q.ilike("article_name", `%${article_name}%`)
     ) as Tables<'articles'>[];
-
-
-
 }
 
 
@@ -55,6 +60,31 @@ export default function SearchModal() {
     const { data: newsResult } = useSWR(["/news", searchQuery], () => Newsfetcher(searchQuery), {
         keepPreviousData: true,
     });
+
+
+
+    const router = useRouter();
+
+    const handleArticleRouterClick = async (articleId: number) => {
+        const category = await onArticleClick(articleId);
+        if (category) {
+            router.push(`/articles/${category}/${articleId}`);
+        }
+    };
+
+    const onArticleClick = async (id: number) => {
+        const categoryData = await fetchCategoryById(id);
+        console.log(categoryData);
+        return categoryData?.category_name;
+    };
+    const handleNewsRouterClick = (newsId: number) => {
+
+        router.push(`/news/${newsId}`);
+
+    };
+
+
+
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -135,14 +165,20 @@ export default function SearchModal() {
                         <TabsTrigger value="news">news</TabsTrigger>
                     </TabsList>
                     <TabsContent value="articles">
-                        <ScrollArea className="max-h-[60vh] p-4">
+                        <ScrollArea className="max-h-[60vh] overflow-y-scroll p-4">
                             {articleResult && articleResult.length > 0 ? (
                                 articleResult.map((result) => (
                                     <div
+
                                         key={result.id_article}
-                                        className="mb-4 p-4 bg-neutral-100 dark:bg-neutral-800 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                                        className="mb-4 p-4 cursor-pointer bg-neutral-100 dark:bg-neutral-800 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                                     >
-                                        <h3 className="text-lg font-semibold mb-2">{result.article_name}</h3>
+                                        <h3
+                                            onClick={() => handleArticleRouterClick(result.id_article)}
+                                            className="text-lg hover:text-purple-600 font-semibold mb-2"
+                                        >
+                                            {result.article_name}
+                                        </h3>
                                         <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
                                             {result.content.length > 100 ? `${result.content.substring(0, 100)}...` : result.content}
                                         </p>
@@ -157,14 +193,16 @@ export default function SearchModal() {
                         </ScrollArea>
                     </TabsContent>
                     <TabsContent value="news">
-                        <ScrollArea className="max-h-[60vh] p-4">
+                        <ScrollArea className="max-h-[60vh] overflow-y-scroll p-4">
                             {newsResult && newsResult.length > 0 ? (
                                 newsResult.map((result) => (
                                     <div
                                         key={result.id}
-                                        className="mb-4 p-4 bg-neutral-100 dark:bg-neutral-800 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                                        className="mb-4 p-4 bg-neutral-100 cursor-pointer dark:bg-neutral-800 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                                     >
-                                        <h3 className="text-lg font-semibold mb-2">{result.news_title}</h3>
+                                        <h3
+                                            onClick={() => handleNewsRouterClick(result.id)}
+                                            className="text-lg hover:text-purple-600 font-semibold mb-2">{result.news_title}</h3>
                                         <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
                                             {result.news_content.length > 100 ? `${result.news_content.substring(0, 100)}...` : result.news_content}
                                         </p>

@@ -6,10 +6,7 @@ import SearchModal from "@/components/search-modal";
 import { motion } from "motion/react";
 
 export default function Header() {
-    // const [searchQuery, setSearchQuery] = useState("");
-    // const handleSearchQuery = function (searchQuery: string) {
-    //     setSearchQuery(searchQuery);
-    // }
+
     return (
         <header
             className="w-full  relative  flex justify-between items-center  z-50 dark:bg-neutral-900 border dark:border-gray-500/20 backdrop-blur-lg py-1 px-2  rounded-b-xl shadow-lg dark:shadow-black">
