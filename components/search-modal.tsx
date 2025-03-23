@@ -69,7 +69,9 @@ export default function SearchModal() {
         const category = await onArticleClick(articleId);
         if (category) {
             router.push(`/articles/${category}/${articleId}`);
+            setIsOpen(false);
         }
+
     };
 
     const onArticleClick = async (id: number) => {
@@ -80,7 +82,7 @@ export default function SearchModal() {
     const handleNewsRouterClick = (newsId: number) => {
 
         router.push(`/news/${newsId}`);
-
+        setIsOpen(false);
     };
 
 
