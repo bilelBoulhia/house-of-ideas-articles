@@ -2,10 +2,10 @@
 
 import { cn } from "@/lib/utils"
 import { AnimatePresence, type MotionValue, motion, useMotionValue, useSpring, useTransform } from "motion/react"
-import Link from "next/link"
+//import Link from "next/link"
 import type React from "react"
 import { useRef, useState } from "react"
-import { ChevronLeftIcon } from "@heroicons/react/16/solid"
+//import { ChevronLeftIcon } from "@heroicons/react/16/solid"
 
 export const FloatingDock = ({
                                  items,
@@ -54,7 +54,7 @@ const FloatingDockDesktop = ({
 
             >
                 <motion.div style={{ rotate: buttonRotate }} className="flex items-center  justify-center">
-                    <ChevronLeftIcon className="size-8" />
+                    {/*<ChevronLeftIcon className="size-8" />*/}
                 </motion.div>
             </motion.button>
 
@@ -162,8 +162,9 @@ function IconContainer({
 
     const [hovered, setHovered] = useState(false)
 
+    //add next link instead of a
     return (
-        <Link href={href}>
+        <a href={href}>
             <motion.div
                 ref={ref}
                 style={{ width, height }}
@@ -187,7 +188,7 @@ function IconContainer({
                     {icon}
                 </motion.div>
             </motion.div>
-        </Link>
+        </a>
     )
 }
 
