@@ -16,11 +16,12 @@ async function fetchCategories() : Promise<Tables<'categories'>[]>  {
     return await fetch<Tables<'categories'>>("categories", ["*"]) as Tables<'categories'>[]
 }
 
+
 async  function   fetchArticlesByCategory(categoryId: string | number): Promise<Tables<'articles'>[]>  {
     return await fetch<Tables<'articles'>>(
         "articles",
         ["id_article", "article_name", "category_id", "created_at", "picture_link", "average_read", "intro"],
-        (q) => q.eq("category_id", categoryId)
+        (q) => q.eq("category_id", categoryId).order("created_at", {ascending: false})
     ) as Tables<'articles'>[]
 }
 const ScrollableTabsList = ({
