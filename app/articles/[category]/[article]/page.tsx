@@ -73,11 +73,11 @@ export default function ArticlePage({ params: paramsPromise }: { params: Promise
                     transition={{ duration: 0.6 }}
                     className="bg-black/40 backdrop-blur-sm rounded-xl p-6 md:p-8 border border-white/5"
                 >
-                    <div className="inline-block px-4 py-1 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-sm font-medium mb-4">
+                    <div className="inline-block px-4 py-1 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-sm font-medium mb-4" dir="auto">
                         {params.category}
                     </div>
 
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-500 via-violet-500 to-pink-500 text-transparent bg-clip-text">
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-500 via-violet-500 to-pink-500 text-transparent bg-clip-text" dir="auto">
                         {article?.article_name}
                     </h1>
 
@@ -93,7 +93,7 @@ export default function ArticlePage({ params: paramsPromise }: { params: Promise
                     </div>
 
                     <div className="space-y-4 mb-8">
-                        <p className="text-gray-200 leading-relaxed">{article?.content}</p>
+                        <p className="text-gray-200 leading-relaxed whitespace-pre-wrap" dir="auto">{article?.content}</p>
                     </div>
 
                     <div className="flex flex-wrap gap-4 mt-8">

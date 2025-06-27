@@ -15,15 +15,35 @@ import useSWR from "swr";
 import { ClockAlert} from "lucide-react";
 
 
-async function fetchCategoryById(Id: number): Promise<any> {
-    const result = await fetch<Tables<"categories">[]>(
+async function fetchArticleWithCategory(articleId: number): Promise<any> {
+    // First get the article to find its category_id
+    const articleResult = await fetch<Tables<"articles">[]>(
+        "articles",
+        ["*"],
+        (q) => q.eq("id_article", articleId)
+    );
+    
+    if (!Array.isArray(articleResult) || articleResult.length === 0) {
+        return null;
+    }
+    
+    const article = articleResult[0];
+    
+    // Then get the category name using the article's category_id
+    const categoryResult = await fetch<Tables<"categories">[]>(
         "categories",
         ["*"],
-        (q) => q.eq("category_id", Id)
+        (q) => q.eq("category_id", article.category_id)
     );
-    console.log(result);
-
-    return Array.isArray(result) && result.length > 0 ? result[0] : {};
+    
+    console.log("Article:", article);
+    console.log("Category:", categoryResult);
+    
+    if (Array.isArray(categoryResult) && categoryResult.length > 0) {
+        return categoryResult[0].category_name;
+    }
+    
+    return null;
 }
 
 const Newsfetcher = async (news_title:string) => {
@@ -66,21 +86,22 @@ export default function SearchModal() {
     const router = useRouter();
 
     const handleArticleRouterClick = async (articleId: number) => {
-        const category = await onArticleClick(articleId);
-        if (category) {
-            router.push(`/articles/${category}/${articleId}`);
-            setIsOpen(false);
+        try {
+            const categoryName = await fetchArticleWithCategory(articleId);
+            if (categoryName) {
+                router.push(`/articles/${categoryName}/${articleId}`);
+                setIsOpen(false);
+            } else {
+                console.error("Could not find category for article:", articleId);
+                // Fallback: try to navigate without category or show error
+                // router.push(`/articles/${articleId}`);
+            }
+        } catch (error) {
+            console.error("Error fetching article category:", error);
         }
-
     };
 
-    const onArticleClick = async (id: number) => {
-        const categoryData = await fetchCategoryById(id);
-        console.log(categoryData);
-        return categoryData?.category_name;
-    };
     const handleNewsRouterClick = (newsId: number) => {
-
         router.push(`/news/${newsId}`);
         setIsOpen(false);
     };
@@ -226,4 +247,3 @@ export default function SearchModal() {
         </Dialog>
     )
 }
-
