@@ -84,7 +84,7 @@ export default function NewsPage({ params: paramsPromise }: { params: Promise<{ 
                     </div>
 
 
-                    <div className="lg:col-span-2 text-right p-6 flex flex-col">
+                    <div className="lg:col-span-2 p-6 flex flex-col">
                         <div className="mb-2 flex items-center gap-4 text-sm text-gray-300">
                             <div className="flex items-center">
                                 <Calendar className="w-4 h-4 mr-2" />
@@ -96,9 +96,9 @@ export default function NewsPage({ params: paramsPromise }: { params: Promise<{ 
                             </div>
                         </div>
 
-                        <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-purple-500 via-violet-500 to-pink-500 text-transparent bg-clip-text">{featuredNews?.news_title}</h2>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-purple-500 via-violet-500 to-pink-500 text-transparent bg-clip-text" dir="auto">{featuredNews?.news_title}</h2>
 
-                        <div className="space-y-3 mb-6  flex-grow">
+                        <div className="space-y-3 mb-6  flex-grow whitespace-pre-wrap" dir="auto">
                             {featuredNews?.news_content}
                          </div>
 

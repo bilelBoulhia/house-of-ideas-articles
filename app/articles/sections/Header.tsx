@@ -14,8 +14,7 @@ export default function Header() {
 
             <motion.a href={'/'} initial={{x: "-110%"}} animate={{x: 0}}
                       transition={{duration: 0.6}}
-                      className='hidden md:inline font-bold bg-gradient-to-r from-purple-500 via-violet-500 to-pink-500  text-transparent bg-clip-text'>house
-                of ideas
+                      className='hidden md:inline font-bold bg-gradient-to-r from-purple-500 via-violet-500 to-pink-500  text-transparent bg-clip-text font-sans text-xl'>HOUSE OF IDEAS
             </motion.a>
             <div className='flex  justify-center items-center'>
                 <TubeLightNavbar/>
