@@ -14,35 +14,31 @@ import {Tables} from "@/utils/types";
 import useSWR from "swr";
 import { ClockAlert} from "lucide-react";
 
-
-async function fetchArticleWithCategory(articleId: number): Promise<any> {
+const fetchArticleWithCategory = async (articleId: number) => {
     // First get the article to find its category_id
-    const articleResult = await fetch<Tables<"articles">[]>(
+    const articleResult = await fetch<Tables<"articles">>(
         "articles",
         ["*"],
         (q) => q.eq("id_article", articleId)
-    );
-    
+    ) as Tables<"articles">[];
+
     if (!Array.isArray(articleResult) || articleResult.length === 0) {
         return null;
     }
-    
+
     const article = articleResult[0];
-    
+
     // Then get the category name using the article's category_id
-    const categoryResult = await fetch<Tables<"categories">[]>(
+    const categoryResult = await fetch<Tables<"categories">>(
         "categories",
         ["*"],
         (q) => q.eq("category_id", article.category_id)
-    );
-    
-    console.log("Article:", article);
-    console.log("Category:", categoryResult);
-    
+    ) as Tables<"categories">[];
+
     if (Array.isArray(categoryResult) && categoryResult.length > 0) {
         return categoryResult[0].category_name;
     }
-    
+
     return null;
 }
 
